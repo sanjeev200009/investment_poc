@@ -9,21 +9,30 @@ from services.news import get_news_data
 from services.ai_agent import generate_ai_insight
 import matplotlib.pyplot as plt
 import joblib
+from pathlib import Path
 
 # Load environment variables
 load_dotenv()
+
+# Get the directory where the script is located
+SCRIPT_DIR = Path(__file__).parent.absolute()
 
 # Load trained model (cached)
 @st.cache_resource
 def load_trained_model():
     """Load trained model and metadata with real data"""
     try:
-        best_model = joblib.load('models/best_model.pkl')
-        scaler = joblib.load('models/scaler.pkl')
-        with open('models/metadata.json') as f:
+        model_path = SCRIPT_DIR / 'models' / 'best_model.pkl'
+        scaler_path = SCRIPT_DIR / 'models' / 'scaler.pkl'
+        metadata_path = SCRIPT_DIR / 'models' / 'metadata.json'
+        
+        best_model = joblib.load(str(model_path))
+        scaler = joblib.load(str(scaler_path))
+        with open(str(metadata_path)) as f:
             metadata = json.load(f)
         return best_model, scaler, metadata
-    except FileNotFoundError:
+    except FileNotFoundError as e:
+        st.warning(f"Model files not found: {e}")
         return None, None, None
 
 # Load real merged dataset
@@ -31,12 +40,14 @@ def load_trained_model():
 def load_real_dataset():
     """Load real trading data from merged dataset"""
     try:
-        df = pd.read_csv('Dataset/trade-summary-merged.csv')
+        data_path = SCRIPT_DIR / 'Dataset' / 'trade-summary-merged.csv'
+        df = pd.read_csv(str(data_path))
         # Handle special column names
         if '**Last Trade (Rs.)' in df.columns:
             df.rename(columns={'**Last Trade (Rs.)': 'Last Trade (Rs.)'}, inplace=True)
         return df
-    except:
+    except Exception as e:
+        st.warning(f"Dataset loading error: {e}")
         return None
 
 # Load sample data (backup)
@@ -59,8 +70,9 @@ def load_sample_data():
                 })
             return pd.DataFrame(data)
         else:
-            # Fallback to original sample
-            with open('sample_data/sample_stock.json') as f:
+            # Fallback to sample JSON if dataset unavailable
+            sample_path = SCRIPT_DIR / 'sample_data' / 'sample_stock.json'
+            with open(str(sample_path)) as f:
                 stocks = json.load(f)
             data = []
             for symbol, info in stocks.items():
@@ -73,7 +85,8 @@ def load_sample_data():
                     'Sector': info.get('sector', 'N/A'),
                 })
             return pd.DataFrame(data)
-    except:
+    except Exception as e:
+        st.warning(f"Sample data loading error: {e}")
         return None
 
 # Load model on startup
