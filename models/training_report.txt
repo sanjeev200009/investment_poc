@@ -1,0 +1,40 @@
+
+======================================================================
+STOCK PRICE PREDICTION MODEL - TRAINING REPORT
+======================================================================
+
+📊 DATASET INFORMATION
+   Total Records: 250
+   Features Used: 9
+   Train/Test Split: 200/50
+
+🤖 MODELS TRAINED
+   1. Linear Regression
+   2. Random Forest
+   3. Gradient Boosting
+   4. Support Vector Regression
+
+🏆 BEST MODEL: Linear Regression
+   R² Score:     1.0000
+   MAE:          0.00 Rs.
+   RMSE:         0.00 Rs.
+
+📈 MODEL COMPARISON
+          Linear Regression  Random Forest  Gradient Boosting  Support Vector Regression
+MAE                     0.0         1.7201             2.2602                    29.0940
+RMSE                    0.0         4.6104             4.4517                    96.9655
+R² Score                1.0         0.9987             0.9988                     0.4088
+
+📁 OUTPUT FILES
+   ✅ Models: ../models/best_model.pkl
+   ✅ Scaler: ../models/scaler.pkl
+   ✅ Metadata: ../models/metadata.json
+   
+📊 VISUALIZATIONS
+   ✅ model_comparison.png
+   ✅ best_model_performance.png
+   ✅ feature_importance.png
+   ✅ distribution_analysis.png
+
+⏰ Training Date: 2025-12-12 18:03:56
+======================================================================

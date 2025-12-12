@@ -1,0 +1,14 @@
+{
+  "Linear Regression": {
+    "type": "LinearRegression"
+  },
+  "Random Forest": {
+    "type": "RandomForestRegressor"
+  },
+  "Gradient Boosting": {
+    "type": "GradientBoostingRegressor"
+  },
+  "Support Vector Regression": {
+    "type": "SVR"
+  }
+}

@@ -1,22 +1,44 @@
 {
   "model_type": "Linear Regression",
   "features": [
-    "price",
-    "volume",
-    "change_percent",
-    "price_ma_7",
-    "volume_ma_7"
+    "Share Volume",
+    "Trade Volume",
+    "Open (Rs.)",
+    "High (Rs.)",
+    "Low (Rs.)",
+    "Price_Range",
+    "Price_Mid",
+    "Volume_Ratio",
+    "Price_Movement"
   ],
-  "r2_score": 0.9934879359068579,
-  "mae": 4.334125906441891,
-  "rmse": 5.438205540679065,
-  "training_date": "2025-12-12T10:43:39.908080",
-  "stocks_trained": [
-    "HNB",
-    "COMB",
-    "DIAL",
-    "JKH",
-    "DEFAULT"
-  ],
-  "samples": 495
+  "r2_score": 1.0,
+  "mae": 2.8875901669778157e-13,
+  "rmse": 9.22757583602311e-13,
+  "training_date": "2025-12-12T18:03:56.449053",
+  "dataset_records": 250,
+  "train_set_size": 200,
+  "test_set_size": 50,
+  "model_comparison": {
+    "Linear Regression": {
+      "MAE": 2.8875901669778157e-13,
+      "RMSE": 9.22757583602311e-13,
+      "R2": 1.0
+    },
+    "Random Forest": {
+      "MAE": 1.720109999999998,
+      "RMSE": 4.6104486186270455,
+      "R2": 0.998663378410504
+    },
+    "Gradient Boosting": {
+      "MAE": 2.26023567944883,
+      "RMSE": 4.451744074932273,
+      "R2": 0.9987538151199815
+    },
+    "Support Vector Regression": {
+      "MAE": 29.093978733680274,
+      "RMSE": 96.96550480608889,
+      "R2": 0.4087697798867521
+    }
+  },
+  "data_source": "trade-summary-merged.csv"
 }
