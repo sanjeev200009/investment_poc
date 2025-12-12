@@ -1,0 +1,22 @@
+{
+  "model_type": "Linear Regression",
+  "features": [
+    "price",
+    "volume",
+    "change_percent",
+    "price_ma_7",
+    "volume_ma_7"
+  ],
+  "r2_score": 0.9934879359068579,
+  "mae": 4.334125906441891,
+  "rmse": 5.438205540679065,
+  "training_date": "2025-12-12T10:43:39.908080",
+  "stocks_trained": [
+    "HNB",
+    "COMB",
+    "DIAL",
+    "JKH",
+    "DEFAULT"
+  ],
+  "samples": 495
+}

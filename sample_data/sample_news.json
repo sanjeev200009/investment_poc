@@ -1,0 +1,31 @@
+{
+  "HNB": [
+    {
+      "title": "[STOCK] Reports Strong Quarterly Earnings",
+      "description": "Hatton National Bank announces better-than-expected quarterly results, with profits rising 15% year-on-year.",
+      "content": "Hatton National Bank PLC (HNB) has reported robust quarterly earnings, demonstrating resilience in the current economic climate. The bank's net interest income grew by 12%, while non-performing loans remained stable. Analysts view these results positively for the banking sector."
+    },
+    {
+      "title": "Banking Sector Shows Recovery Signs",
+      "description": "Sri Lankan banking stocks, including [STOCK], gain momentum as economic indicators improve.",
+      "content": "The Colombo Stock Exchange's banking sector index rose 2.3% today, with HNB among the leading gainers. Improved foreign exchange reserves and lower inflation are contributing to renewed investor confidence in financial stocks."
+    }
+  ],
+  "GENERAL": [
+    {
+      "title": "Colombo Stock Exchange Sees Increased Retail Participation",
+      "description": "More beginner investors are entering the Sri Lankan stock market, driven by digital platforms and financial education initiatives.",
+      "content": "The Securities and Exchange Commission reports a 25% increase in new retail investor accounts in the past quarter. This trend reflects growing financial literacy and accessibility through mobile trading apps."
+    },
+    {
+      "title": "Sri Lanka Economic Outlook Improves",
+      "description": "IMF program progress and tourism recovery boost investor confidence in Sri Lankan markets.",
+      "content": "Positive economic indicators and successful debt restructuring negotiations are creating a more favorable environment for investments. Experts recommend cautious optimism while monitoring ongoing reforms."
+    },
+    {
+      "title": "Digital Investment Platforms Gain Popularity",
+      "description": "AI-powered investment tools are helping beginner investors navigate the stock market with educational support.",
+      "content": "New fintech solutions are democratizing access to stock market information, providing personalized insights and risk assessments for novice investors in Sri Lanka."
+    }
+  ]
+}
