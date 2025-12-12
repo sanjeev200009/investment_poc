@@ -26,13 +26,24 @@ def load_trained_model():
         scaler_path = SCRIPT_DIR / 'models' / 'scaler.pkl'
         metadata_path = SCRIPT_DIR / 'models' / 'metadata.json'
         
+        print(f"[MODEL LOAD] Script directory: {SCRIPT_DIR}")
+        print(f"[MODEL LOAD] Looking for model at: {model_path}")
+        print(f"[MODEL LOAD] Model file exists: {model_path.exists()}")
+        
         best_model = joblib.load(str(model_path))
         scaler = joblib.load(str(scaler_path))
         with open(str(metadata_path)) as f:
             metadata = json.load(f)
+        
+        print(f"[MODEL LOAD] SUCCESS: Model loaded successfully!")
         return best_model, scaler, metadata
     except FileNotFoundError as e:
-        st.warning(f"Model files not found: {e}")
+        print(f"[MODEL LOAD] FileNotFoundError: {e}")
+        return None, None, None
+    except Exception as e:
+        print(f"[MODEL LOAD] Error: {e}")
+        import traceback
+        traceback.print_exc()
         return None, None, None
 
 # Load real merged dataset
@@ -92,7 +103,12 @@ def load_sample_data():
 # Load model on startup
 try:
     best_model, scaler, model_metadata = load_trained_model()
+    if best_model is None:
+        print("[STARTUP] WARNING: Model failed to load - best_model is None")
 except Exception as e:
+    print(f"[STARTUP] ERROR loading model: {e}")
+    import traceback
+    traceback.print_exc()
     best_model, scaler, model_metadata = None, None, None
 
 # Page configuration
