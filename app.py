@@ -203,13 +203,32 @@ with feature_tabs[1]:  # Data Exploration
             st.dataframe(display_df, use_container_width=True, hide_index=True)
         except:
             st.dataframe(df.head(20), use_container_width=True, hide_index=True)
-        
-        st.markdown("**📋 Price Distribution Summary**")
+
+        # Flexible column selector + quick histogram
+        st.markdown("**📋 Column Summary & Quick Histogram**")
         try:
-            price_col = 'Last Trade (Rs.)' if 'Last Trade (Rs.)' in df.columns else df.columns[8]
-            st.write(df[[price_col]].astype(float).describe())
-        except:
-            st.info("Summary statistics not available for this view")
+            # Suggest numeric columns only
+            numeric_cols = [c for c in df.columns if pd.to_numeric(df[c], errors='coerce').notna().sum() > 0]
+            default_col = 'Last Trade (Rs.)' if 'Last Trade (Rs.)' in numeric_cols else (numeric_cols[0] if numeric_cols else None)
+            selected_col = st.selectbox("Select a column:", options=numeric_cols, index=(numeric_cols.index(default_col) if default_col in numeric_cols else 0)) if numeric_cols else None
+
+            if selected_col:
+                col_data = pd.to_numeric(df[selected_col], errors='coerce').dropna()
+                # Summary table
+                st.write(col_data.describe())
+                # Mini histogram
+                fig, ax = plt.subplots(figsize=(8, 4), facecolor='white')
+                ax.hist(col_data, bins=30, color="#3B82F6", alpha=0.75, edgecolor="#1E3A8A", linewidth=1.0)
+                ax.set_title(f"Distribution: {selected_col}")
+                ax.set_xlabel(selected_col)
+                ax.set_ylabel("Frequency")
+                ax.grid(axis='y', alpha=0.3)
+                plt.tight_layout()
+                st.pyplot(fig)
+            else:
+                st.info("No numeric columns detected for summary.")
+        except Exception as e:
+            st.info(f"Summary not available: {e}")
 
 with feature_tabs[2]:  # Visualizations
     st.markdown("## 📊 **Interactive Visualizations - Investment Analysis**")
