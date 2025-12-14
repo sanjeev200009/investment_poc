@@ -699,6 +699,36 @@ with feature_tabs[4]:  # Model Performance
             st.metric("RMSE", f"LKR {model_metadata.get('rmse', 0):.2f}")
         with col4:
             st.metric("Records", model_metadata.get('dataset_records', 0))
+
+        # Confidence badge row (beginner-friendly status)
+        st.markdown("**✅ Confidence Summary**")
+        try:
+            r2 = float(model_metadata.get('r2_score', 0))
+            mae = float(model_metadata.get('mae', 0))
+            rmse = float(model_metadata.get('rmse', 0))
+            def badge(val, good, ok, invert=False):
+                # Returns (label, color) based on thresholds
+                if invert:
+                    if val <= good: return ("Excellent", "#10B981")
+                    if val <= ok: return ("Good", "#F59E0B")
+                    return ("Fair", "#EF4444")
+                else:
+                    if val >= good: return ("Excellent", "#10B981")
+                    if val >= ok: return ("Good", "#F59E0B")
+                    return ("Fair", "#EF4444")
+            r2_badge, r2_color = badge(r2, 0.95, 0.80, invert=False)
+            mae_badge, mae_color = badge(mae, 5.0, 20.0, invert=True)
+            rmse_badge, rmse_color = badge(rmse, 10.0, 50.0, invert=True)
+            b1, b2, b3 = st.columns(3)
+            with b1:
+                st.markdown(f"<div style='background:{r2_color};padding:8px;border-radius:6px;color:white;font-weight:600;'>R²: {r2:.3f} — {r2_badge}</div>", unsafe_allow_html=True)
+            with b2:
+                st.markdown(f"<div style='background:{mae_color};padding:8px;border-radius:6px;color:white;font-weight:600;'>MAE: {mae:.2f} LKR — {mae_badge}</div>", unsafe_allow_html=True)
+            with b3:
+                st.markdown(f"<div style='background:{rmse_color};padding:8px;border-radius:6px;color:white;font-weight:600;'>RMSE: {rmse:.2f} LKR — {rmse_badge}</div>", unsafe_allow_html=True)
+            st.caption("Higher R² is better. Lower MAE/RMSE (LKR) indicate lower error.")
+        except Exception:
+            pass
         
         st.markdown("**Model Information:**")
         col1, col2, col3 = st.columns(3)
@@ -715,6 +745,24 @@ with feature_tabs[4]:  # Model Performance
             if comparison:
                 comp_df = pd.DataFrame(comparison).round(4)
                 st.dataframe(comp_df, use_container_width=True)
+
+                # Compact bar chart for R² across models
+                try:
+                    st.markdown("#### R² Comparison (Higher is better)")
+                    fig, ax = plt.subplots(figsize=(8, 4), facecolor='white')
+                    models_list = list(comp_df.columns)
+                    r2_values = [comp_df[m]['R2'] for m in models_list]
+                    colors = ['#10B981' if v >= 0.95 else '#F59E0B' if v >= 0.80 else '#EF4444' for v in r2_values]
+                    ax.bar(models_list, r2_values, color=colors, alpha=0.85, edgecolor='black', linewidth=1.0)
+                    ax.set_ylim(0, 1.05)
+                    ax.set_ylabel('R²')
+                    ax.grid(axis='y', alpha=0.3)
+                    for i, v in enumerate(r2_values):
+                        ax.text(i, v+0.02, f"{v:.3f}", ha='center', va='bottom', fontweight='bold')
+                    plt.tight_layout()
+                    st.pyplot(fig)
+                except Exception:
+                    pass
             else:
                 st.info("Model comparison data not available")
         except Exception as e:
@@ -727,6 +775,14 @@ with feature_tabs[4]:  # Model Performance
         for idx, feature in enumerate(features):
             with cols[idx % col_count]:
                 st.write(f"✓ {feature}")
+
+        # Residuals quick-view if parquet of predictions unavailable; show synthetic note
+        st.markdown("**Residuals Quick-View (Best Model)**")
+        try:
+            # We don't have residuals in metadata, so provide an interpretive hint
+            st.info("Lower MAE/RMSE indicate residuals clustered near 0. See training visuals in visualizations/*.png for detailed plots.")
+        except Exception:
+            pass
     else:
         st.warning("Model not available - visualizations from real training coming soon!")
 
